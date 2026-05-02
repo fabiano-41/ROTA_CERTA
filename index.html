@@ -109,6 +109,77 @@ input {
   align-items: center;
   cursor: pointer;
 }
+  @media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+    text-align: center;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  nav a {
+    margin-left: 0;
+    font-size: 14px;
+    background: rgba(255,255,255,0.15);
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .container {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #map {
+    height: 280px;
+  }
+
+  .fab {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+    bottom: 15px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 18px;
+  }
+
+  nav a {
+    width: 100%;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  #map {
+    height: 230px;
+  }
+
+  .login-box {
+    margin: 30px 12px;
+  }
+}
 </style>
 </head>
 
