@@ -1,278 +1,182 @@
-
-    * {
-      box-sizing: border-box;
-    }
-
-#sistema {
-  flex: 1;
+/* Reset */
+* {
+  box-sizing: border-box;
 }
 
-    body {
-     margin: 0;
+/* Estrutura principal */
+body {
+  margin: 0;
   font-family: Arial, sans-serif;
   background: #f0fdf4;
 
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-    }
+}
 
-    /* Cabeçalho do sistema */
-    header {
-      background: #16a34a;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 30px;
-      gap: 20px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+/* Sistema ocupa a tela */
+#sistema {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-    /* Logo do site */
-    .logo {
-      font-weight: bold;
-      font-size: 22px;
-      white-space: nowrap;
-    }
+/* Cabeçalho */
+header {
+  background: #16a34a;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 30px;
+  gap: 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
 
-    /* Menu de navegação */
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
+/* Logo */
+.logo {
+  font-weight: bold;
+  font-size: 22px;
+}
 
-  
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-      padding: 9px 11px;
-      border-radius: 8px;
-      transition: 0.2s;
-      font-size: 15px;
-    }
+/* Menu */
+nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
-    
-    nav a:hover {
-      background: rgba(255,255,255,0.20);
-    }
+/* Links */
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 9px 11px;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
+nav a:hover {
+  background: rgba(255,255,255,0.2);
+}
 
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: auto;
-      padding: 24px;
-    }
+/* Container principal */
+.container {
+  flex: 1; /* ESSENCIAL pro rodapé */
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 24px;
+}
 
-   
-    .tela {
-      display: none;
-    }
+/* Telas */
+.tela {
+  display: none;
+}
 
+.tela.ativa {
+  display: block;
+}
 
-    .tela.ativa {
-      display: block;
-    }
+/* Títulos */
+h2 {
+  color: #166534;
+}
 
-    
-    h2 {
-      color: #166534;
-      margin-top: 0;
-      font-size: 26px;
-    }
+/* Cards */
+.card {
+  background: white;
+  padding: 18px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  border-left: 5px solid #16a34a;
+}
 
-    
-    .card {
-      background: white;
-      padding: 18px;
-      margin-bottom: 14px;
-      border-radius: 14px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-      border-left: 5px solid #16a34a;
-    }
+/* Botões */
+button {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-  
-    button {
-      background: #16a34a;
-      color: white;
-      border: none;
-      padding: 10px 14px;
-      border-radius: 8px;
-      margin-top: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
+button:hover {
+  background: #15803d;
+}
 
-   
-    button:hover {
-      background: #15803d;
-      transform: scale(1.02);
-    }
+/* Inputs */
+input {
+  padding: 12px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
 
-   
-    input {
-      padding: 12px;
-      width: 100%;
-      max-width: 420px;
-      border: 1px solid #ccc;
-      border-radius: 9px;
-      font-size: 15px;
-      outline: none;
-    }
+/* Mapa */
+#map {
+  width: 100%;
+  height: 350px;
+  border-radius: 12px;
+}
 
-   
-    input:focus {
-      border-color: #16a34a;
-      box-shadow: 0 0 0 2px rgba(22,163,74,0.2);
-    }
+/* Login */
+.login-box {
+  max-width: 400px;
+  margin: 80px auto;
+  text-align: center;
+}
 
-    /* Mapa */
-    #map {
-      width: 100%;
-      height: 380px;
-      border-radius: 14px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-      overflow: hidden;
-    }
+/* Botão flutuante (+) */
+.fab {
+  position: fixed;
+  bottom: 90px; /* NÃO encosta no rodapé */
+  right: 20px;
+  background: #16a34a;
+  color: white;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
 
-    /*  login */
-    .login-box {
-      width: 90%;
-      max-width: 420px;
-      margin: 80px auto;
-      text-align: center;
-    }
-
-    /* Botão  de nova entrega */
-    .fab {
-      position: fixed;
-      bottom: 22px;
-      right: 22px;
-      background: #16a34a;
-      color: white;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      font-size: 26px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-      transition: 0.2s;
-      z-index: 999;
-    }
-
-    
-    .fab:hover {
-      background: #15803d;
-      transform: scale(1.08);
-    }
-
-    
-    .lista-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-    }
-
-    /* Responsivo para tablets */
-    @media (max-width: 900px) {
-      header {
-        flex-direction: column;
-        align-items: center;
-        padding: 16px;
-      }
-
-      nav {
-        justify-content: center;
-      }
-
-      nav a {
-        background: rgba(255,255,255,0.15);
-      }
-    }
-
-    /* Responsivo para celulares */
-    @media (max-width: 600px) {
-      .container {
-        padding: 16px;
-      }
-
-      h2 {
-        font-size: 22px;
-        text-align: center;
-      }
-
-      header {
-        padding: 14px;
-      }
-
-      .logo {
-        font-size: 20px;
-      }
-
-      nav {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-
-      nav a {
-        width: 100%;
-        text-align: center;
-        padding: 12px;
-        background: rgba(255,255,255,0.18);
-      }
-
-      .card {
-        padding: 15px;
-      }
-
-      #map {
-        height: 300px;
-      }
-
-      .login-box {
-        margin-top: 45px;
-      }
-
-      .fab {
-        width: 52px;
-        height: 52px;
-        font-size: 23px;
-        bottom: 16px;
-        right: 16px;
-      }
-    }
-
+/* Rodapé */
 .rodape {
-   background: #16a34a;
+  background: #16a34a;
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 18px;
+  margin-top: auto;
 }
 
-.rodape p {
-  margin: 6px 0;
-}
+/* Responsivo */
+@media (max-width: 600px) {
 
-.rodape p:first-child {
-  font-size: 20px;
-  font-weight: bold;
-}
+  header {
+    flex-direction: column;
+  }
 
-.rodape small {
-  opacity: 0.9;
+  nav {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  nav a {
+    width: 100%;
+    text-align: center;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .fab {
+    bottom: 85px;
+    right: 15px;
+  }
+
 }
