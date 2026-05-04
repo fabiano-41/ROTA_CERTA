@@ -131,7 +131,7 @@ input {
 }
 
 /* Botão flutuante (+) */
-fab {
+.fab {
   position: fixed;
   right: 20px;
 
