@@ -1,358 +1,537 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Rota Certa</title>
+  <!-- Define os caracteres para aceitar acentos -->
+  <meta charset="UTF-8">
 
+  <!-- Faz o site se adaptar ao tamanho da tela do celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  <!-- Título que aparece na aba do navegador -->
+  <title>Rota Certa</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f0fdf4;
-}
+  <!-- Biblioteca de ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-header {
-  background: #16a34a;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-}
+  <!-- CSS do mapa Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 
-.logo {
-  font-weight: bold;
-  font-size: 20px;
-}
+  <style>
+    /* Configuração geral do site */
+    * {
+      box-sizing: border-box;
+    }
 
-nav a {
-  color: white;
-  margin-left: 18px;
-  text-decoration: none;
-  font-weight: bold;
-  cursor: pointer;
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0fdf4;
+      color: #1f2937;
+    }
 
-nav a:hover {
-  text-decoration: underline;
-}
+    /* Cabeçalho do sistema */
+    header {
+      background: #16a34a;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 30px;
+      gap: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-.container {
-  padding: 20px;
-}
+    /* Logo do site */
+    .logo {
+      font-weight: bold;
+      font-size: 22px;
+      white-space: nowrap;
+    }
 
-.tela {
-  display: none;
-}
+    /* Menu de navegação */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
 
-.tela.ativa {
-  display: block;
-}
+    /* Links do menu */
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 9px 11px;
+      border-radius: 8px;
+      transition: 0.2s;
+      font-size: 15px;
+    }
 
-.card {
-  background: white;
-  padding: 16px;
-  margin-bottom: 12px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #cfcfcf;
-}
+    /* Efeito quando passa o mouse no menu */
+    nav a:hover {
+      background: rgba(255,255,255,0.20);
+    }
 
-button {
-  background: #16a34a;
-  color: white;
-  border: none;
-  padding: 9px 12px;
-  border-radius: 7px;
-  margin-top: 8px;
-  cursor: pointer;
-}
+    /* Área principal do conteúdo */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 24px;
+    }
 
-button:hover {
-  background: #15803d;
-}
+    /* Telas ficam escondidas por padrão */
+    .tela {
+      display: none;
+    }
 
-input {
-  padding: 10px;
-  width: 95%;
-  max-width: 350px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
+    /* Tela ativa aparece */
+    .tela.ativa {
+      display: block;
+    }
 
-#map {
-  height: 350px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #cfcfcf;
-}
+    /* Títulos das páginas */
+    h2 {
+      color: #166534;
+      margin-top: 0;
+      font-size: 26px;
+    }
 
-.login-box {
-  max-width: 400px;
-  margin: 80px auto;
-}
+    /* Cartões de conteúdo */
+    .card {
+      background: white;
+      padding: 18px;
+      margin-bottom: 14px;
+      border-radius: 14px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+      border-left: 5px solid #16a34a;
+    }
 
-.fab {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #16a34a;
-  color: white;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  font-size: 26px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
+    /* Botões */
+    button {
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
 
-@media (max-width:300px) {
-  header {
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 10px !important;
-  }
+    /* Efeito ao passar o mouse no botão */
+    button:hover {
+      background: #15803d;
+      transform: scale(1.02);
+    }
 
-  nav {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    gap: 8px !important;
-  }
+    /* Campos de texto */
+    input {
+      padding: 12px;
+      width: 100%;
+      max-width: 420px;
+      border: 1px solid #ccc;
+      border-radius: 9px;
+      font-size: 15px;
+      outline: none;
+    }
 
-  nav a {
-    display: block !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 12px !important;
-    text-align: center !important;
-    background: rgba(255,255,255,0.20) !important;
-    border-radius: 8px !important;
-    box-sizing: border-box !important;
-  }
+    /* Efeito ao clicar no input */
+    input:focus {
+      border-color: #16a34a;
+      box-shadow: 0 0 0 2px rgba(22,163,74,0.2);
+    }
 
-  #map {
-    height: 260px !important;
-  }
-}
-</style>
+    /* Mapa */
+    #map {
+      width: 100%;
+      height: 380px;
+      border-radius: 14px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+
+    /* Caixa de login */
+    .login-box {
+      width: 90%;
+      max-width: 420px;
+      margin: 80px auto;
+      text-align: center;
+    }
+
+    /* Botão flutuante de nova entrega */
+    .fab {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: #16a34a;
+      color: white;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      font-size: 26px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      transition: 0.2s;
+      z-index: 999;
+    }
+
+    /* Efeito no botão flutuante */
+    .fab:hover {
+      background: #15803d;
+      transform: scale(1.08);
+    }
+
+    /* Grade para organizar cards em telas maiores */
+    .lista-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    /* Responsivo para tablets */
+    @media (max-width: 900px) {
+      header {
+        flex-direction: column;
+        align-items: center;
+        padding: 16px;
+      }
+
+      nav {
+        justify-content: center;
+      }
+
+      nav a {
+        background: rgba(255,255,255,0.15);
+      }
+    }
+
+    /* Responsivo para celulares */
+    @media (max-width: 600px) {
+      .container {
+        padding: 16px;
+      }
+
+      h2 {
+        font-size: 22px;
+        text-align: center;
+      }
+
+      header {
+        padding: 14px;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      nav {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      nav a {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+        background: rgba(255,255,255,0.18);
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      #map {
+        height: 300px;
+      }
+
+      .login-box {
+        margin-top: 45px;
+      }
+
+      .fab {
+        width: 52px;
+        height: 52px;
+        font-size: 23px;
+        bottom: 16px;
+        right: 16px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div id="login" class="login-box card">
-  <h2><i class="fa-solid fa-truck"></i>  do Motorista</h2>
+  <!-- Tela de login -->
+  <div id="login" class="login-box card">
+    <h2><i class="fa-solid fa-truck"></i> Login do Motorista</h2>
 
-  <input id="usuario" placeholder="Nome do motorista"><br><br>
-  <input id="senha" type="password" placeholder="Senha"><br><br>
+    <!-- Campo para nome do motorista -->
+    <input id="usuario" placeholder="Nome do motorista"><br><br>
 
-  <button onclick="entrar()">
-    <i class="fa-solid fa-right-to-bracket"></i> Entrar
-  </button>
+    <!-- Campo para senha -->
+    <input id="senha" type="password" placeholder="Senha"><br><br>
 
-  <p><small>Teste: qualquer nome e qualquer senha entram.</small></p>
-</div>
-
-<div id="sistema" style="display:none;">
-
-<header>
-  <div class="logo"><i class="fa-solid fa-truck-fast"></i> Rota Certa</div>
-
-  <nav>
-    <a onclick="mostrarTela('localizacao')"><i class="fa-solid fa-map-location-dot"></i> Localização</a>
-    <a onclick="mostrarTela('entregas')"><i class="fa-solid fa-box"></i> Entregas</a>
-    <a onclick="mostrarTela('concluidas')"><i class="fa-solid fa-circle-check"></i> Concluídas</a>
-    <a onclick="mostrarTela('historico')"><i class="fa-solid fa-clock-rotate-left"></i> Histórico</a>
-    <a onclick="mostrarTela('cadastro')"><i class="fa-solid fa-plus"></i> Nova Entrega</a>
-    <a onclick="sair()"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
-  </nav>
-</header>
-
-<div class="container">
-
-<div id="localizacao" class="tela ativa">
-  <h2><i class="fa-solid fa-map-location-dot"></i> Mapa da rota</h2>
-  <div id="map"></div>
-</div>
-
-<div id="entregas" class="tela">
-  <h2><i class="fa-solid fa-box"></i> Entregas para fazer</h2>
-  <div id="listaEntregas"></div>
-</div>
-
-<div id="concluidas" class="tela">
-  <h2><i class="fa-solid fa-circle-check"></i> Entregas concluídas</h2>
-  <div id="listaConcluidas"></div>
-</div>
-
-<div id="historico" class="tela">
-  <h2><i class="fa-solid fa-clock-rotate-left"></i> Histórico</h2>
-  <div id="historicoLista"></div>
-</div>
-
-<div id="cadastro" class="tela">
-  <h2><i class="fa-solid fa-plus"></i> Cadastrar nova entrega</h2>
-
-  <div class="card">
-    <input id="nome" placeholder="Nome do cliente"><br><br>
-    <input id="endereco" placeholder="Endereço"><br><br>
-    <input id="obs" placeholder="Observação"><br><br>
-
-    <button onclick="criarEntrega()">
-      <i class="fa-solid fa-floppy-disk"></i> Salvar entrega
+    <!-- Botão que chama a função entrar -->
+    <button onclick="entrar()">
+      <i class="fa-solid fa-right-to-bracket"></i> Entrar
     </button>
+
+    <p><small>Teste: qualquer nome e qualquer senha entram.</small></p>
   </div>
-</div>
 
-</div>
+  <!-- Sistema principal, começa escondido -->
+  <div id="sistema" style="display:none;">
 
-<div class="fab" onclick="mostrarTela('cadastro')">
-  <i class="fa-solid fa-plus"></i>
-</div>
-
-</div>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-<script>
-let entregas = [
-  { nome: "João Silva", endereco: "Rua A, 120", obs: "Cliente em casa", status: "pendente" },
-  { nome: "Maria Souza", endereco: "Rua B, 45", obs: "Entregar na portaria", status: "pendente" },
-  { nome: "Luis Saulo", endereco: "Rua C, Centro", obs: "Cliente não estava", status: "entregue" }
-];
-
-let mapaCriado = false;
-
-function entrar() {
-  let usuario = document.getElementById("usuario").value;
-  let senha = document.getElementById("senha").value;
-
-  if (!usuario || !senha) {
-    alert("Preencha nome e senha");
-    return;
-  }
-
-  document.getElementById("login").style.display = "none";
-  document.getElementById("sistema").style.display = "block";
-
-  criarMapa();
-  render();
-}
-
-function sair() {
-  document.getElementById("sistema").style.display = "none";
-  document.getElementById("login").style.display = "block";
-}
-
-function mostrarTela(tela) {
-  document.querySelectorAll(".tela").forEach(t => t.classList.remove("ativa"));
-  document.getElementById(tela).classList.add("ativa");
-
-  if (tela === "localizacao") {
-    setTimeout(() => {
-      if (window.mapa) window.mapa.invalidateSize();
-    }, 200);
-  }
-
-  render();
-}
-
-function criarMapa() {
-  if (mapaCriado) return;
-
-  window.mapa = L.map("map").setView([-19.5189, -42.6289], 14);
-
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "&copy; OpenStreetMap contributors"
-  }).addTo(window.mapa);
-
-  L.marker([-19.5189, -42.6289]).addTo(window.mapa)
-    .bindPopup("Motorista aqui")
-    .openPopup();
-
-  L.marker([-19.5220, -42.6250]).addTo(window.mapa)
-    .bindPopup("Entrega: João Silva");
-
-  L.marker([-19.5150, -42.6320]).addTo(window.mapa)
-    .bindPopup("Entrega: Maria Souza");
-
-  mapaCriado = true;
-}
-
-function render() {
-  let lista = document.getElementById("listaEntregas");
-  let concluidas = document.getElementById("listaConcluidas");
-  let historico = document.getElementById("historicoLista");
-
-  lista.innerHTML = "";
-  concluidas.innerHTML = "";
-  historico.innerHTML = "";
-
-  entregas.forEach((e, i) => {
-    let icone = e.status === "entregue" ? "fa-circle-check" : "fa-truck";
-    let textoStatus = e.status === "entregue" ? "Entregue" : "Pendente";
-
-    let card = `
-      <div class="card">
-        <b><i class="fa-solid ${icone}"></i> ${e.nome}</b><br>
-        <i class="fa-solid fa-location-dot"></i> ${e.endereco}<br>
-        <i class="fa-solid fa-comment"></i> ${e.obs}<br>
-        <b>Status:</b> ${textoStatus}<br>
-        ${e.status !== "entregue" ? `
-          <button onclick="finalizar(${i})">
-            <i class="fa-solid fa-check"></i> Marcar como entregue
-          </button>
-        ` : ""}
+    <!-- Cabeçalho com logo e menu -->
+    <header>
+      <div class="logo">
+        <i class="fa-solid fa-truck-fast"></i> Rota Certa
       </div>
-    `;
 
-    if (e.status === "entregue") {
-      concluidas.innerHTML += card;
-    } else {
-      lista.innerHTML += card;
+      <!-- Menu de navegação -->
+      <nav>
+        <a onclick="mostrarTela('localizacao')"><i class="fa-solid fa-map-location-dot"></i> Localização</a>
+        <a onclick="mostrarTela('entregas')"><i class="fa-solid fa-box"></i> Entregas</a>
+        <a onclick="mostrarTela('concluidas')"><i class="fa-solid fa-circle-check"></i> Concluídas</a>
+        <a onclick="mostrarTela('historico')"><i class="fa-solid fa-clock-rotate-left"></i> Histórico</a>
+        <a onclick="mostrarTela('cadastro')"><i class="fa-solid fa-plus"></i> Nova Entrega</a>
+        <a onclick="sair()"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+      </nav>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <div class="container">
+
+      <!-- Tela do mapa -->
+      <div id="localizacao" class="tela ativa">
+        <h2><i class="fa-solid fa-map-location-dot"></i> Mapa da rota</h2>
+        <div id="map"></div>
+      </div>
+
+      <!-- Tela das entregas pendentes -->
+      <div id="entregas" class="tela">
+        <h2><i class="fa-solid fa-box"></i> Entregas para fazer</h2>
+        <div id="listaEntregas" class="lista-grid"></div>
+      </div>
+
+      <!-- Tela das entregas concluídas -->
+      <div id="concluidas" class="tela">
+        <h2><i class="fa-solid fa-circle-check"></i> Entregas concluídas</h2>
+        <div id="listaConcluidas" class="lista-grid"></div>
+      </div>
+
+      <!-- Tela do histórico -->
+      <div id="historico" class="tela">
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> Histórico</h2>
+        <div id="historicoLista" class="lista-grid"></div>
+      </div>
+
+      <!-- Tela de cadastro de entrega -->
+      <div id="cadastro" class="tela">
+        <h2><i class="fa-solid fa-plus"></i> Cadastrar nova entrega</h2>
+
+        <div class="card">
+          <input id="nome" placeholder="Nome do cliente"><br><br>
+          <input id="endereco" placeholder="Endereço"><br><br>
+          <input id="obs" placeholder="Observação"><br><br>
+
+          <button onclick="criarEntrega()">
+            <i class="fa-solid fa-floppy-disk"></i> Salvar entrega
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Botão flutuante para cadastrar entrega -->
+    <div class="fab" onclick="mostrarTela('cadastro')">
+      <i class="fa-solid fa-plus"></i>
+    </div>
+
+  </div>
+
+  <!-- Biblioteca JavaScript do mapa -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    // Lista inicial de entregas
+    let entregas = [
+      { nome: "João Silva", endereco: "Rua A, 120", obs: "Cliente em casa", status: "pendente" },
+      { nome: "Maria Souza", endereco: "Rua B, 45", obs: "Entregar na portaria", status: "pendente" },
+      { nome: "Luis Saulo", endereco: "Rua C, Centro", obs: "Cliente não estava", status: "entregue" }
+    ];
+
+    // Controla se o mapa já foi criado
+    let mapaCriado = false;
+
+    // Função para entrar no sistema
+    function entrar() {
+      let usuario = document.getElementById("usuario").value;
+      let senha = document.getElementById("senha").value;
+
+      // Verifica se os campos foram preenchidos
+      if (!usuario || !senha) {
+        alert("Preencha nome e senha");
+        return;
+      }
+
+      // Esconde o login e mostra o sistema
+      document.getElementById("login").style.display = "none";
+      document.getElementById("sistema").style.display = "block";
+
+      // Cria o mapa e carrega as entregas
+      criarMapa();
+      render();
     }
 
-    historico.innerHTML += card;
-  });
-}
+    // Função para sair do sistema
+    function sair() {
+      document.getElementById("sistema").style.display = "none";
+      document.getElementById("login").style.display = "block";
+    }
 
-function finalizar(i) {
-  entregas[i].status = "entregue";
-  render();
-  alert("Entrega finalizada!");
-}
+    // Função para trocar de tela
+    function mostrarTela(tela) {
+      // Remove a classe ativa de todas as telas
+      document.querySelectorAll(".tela").forEach(t => t.classList.remove("ativa"));
 
-function criarEntrega() {
-  let nome = document.getElementById("nome").value;
-  let endereco = document.getElementById("endereco").value;
-  let obs = document.getElementById("obs").value;
+      // Ativa apenas a tela escolhida
+      document.getElementById(tela).classList.add("ativa");
 
-  if (!nome || !endereco) {
-    alert("Preencha nome e endereço");
-    return;
-  }
+      // Corrige o tamanho do mapa quando volta para ele
+      if (tela === "localizacao") {
+        setTimeout(() => {
+          if (window.mapa) window.mapa.invalidateSize();
+        }, 200);
+      }
 
-  entregas.push({
-    nome,
-    endereco,
-    obs: obs || "Sem observação",
-    status: "pendente"
-  });
+      // Atualiza as listas
+      render();
+    }
 
-  document.getElementById("nome").value = "";
-  document.getElementById("endereco").value = "";
-  document.getElementById("obs").value = "";
+    // Função que cria o mapa
+    function criarMapa() {
+      // Impede criar o mapa mais de uma vez
+      if (mapaCriado) return;
 
-  mostrarTela("entregas");
-}
-</script>
+      // Define posição inicial do mapa
+      window.mapa = L.map("map").setView([-19.5189, -42.6289], 14);
+
+      // Carrega o mapa do OpenStreetMap
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap contributors"
+      }).addTo(window.mapa);
+
+      // Marcador do motorista
+      L.marker([-19.5189, -42.6289]).addTo(window.mapa)
+        .bindPopup("Motorista aqui")
+        .openPopup();
+
+      // Marcador da entrega do João
+      L.marker([-19.5220, -42.6250]).addTo(window.mapa)
+        .bindPopup("Entrega: João Silva");
+
+      // Marcador da entrega da Maria
+      L.marker([-19.5150, -42.6320]).addTo(window.mapa)
+        .bindPopup("Entrega: Maria Souza");
+
+      // Marca que o mapa já foi criado
+      mapaCriado = true;
+    }
+
+    // Função que desenha as entregas na tela
+    function render() {
+      let lista = document.getElementById("listaEntregas");
+      let concluidas = document.getElementById("listaConcluidas");
+      let historico = document.getElementById("historicoLista");
+
+      // Limpa as listas antes de carregar novamente
+      lista.innerHTML = "";
+      concluidas.innerHTML = "";
+      historico.innerHTML = "";
+
+      // Passa por cada entrega da lista
+      entregas.forEach((e, i) => {
+        let icone = e.status === "entregue" ? "fa-circle-check" : "fa-truck";
+        let textoStatus = e.status === "entregue" ? "Entregue" : "Pendente";
+
+        // Cria o card da entrega
+        let card = `
+          <div class="card">
+            <b><i class="fa-solid ${icone}"></i> ${e.nome}</b><br><br>
+            <i class="fa-solid fa-location-dot"></i> ${e.endereco}<br>
+            <i class="fa-solid fa-comment"></i> ${e.obs}<br>
+            <b>Status:</b> ${textoStatus}<br>
+
+            ${e.status !== "entregue" ? `
+              <button onclick="finalizar(${i})">
+                <i class="fa-solid fa-check"></i> Marcar como entregue
+              </button>
+            ` : ""}
+          </div>
+        `;
+
+        // Se estiver entregue, vai para concluídas
+        if (e.status === "entregue") {
+          concluidas.innerHTML += card;
+        } else {
+          lista.innerHTML += card;
+        }
+
+        // Histórico mostra todas as entregas
+        historico.innerHTML += card;
+      });
+    }
+
+    // Função para finalizar uma entrega
+    function finalizar(i) {
+      entregas[i].status = "entregue";
+      render();
+      alert("Entrega finalizada!");
+    }
+
+    // Função para criar uma nova entrega
+    function criarEntrega() {
+      let nome = document.getElementById("nome").value;
+      let endereco = document.getElementById("endereco").value;
+      let obs = document.getElementById("obs").value;
+
+      // Verifica se nome e endereço foram preenchidos
+      if (!nome || !endereco) {
+        alert("Preencha nome e endereço");
+        return;
+      }
+
+      // Adiciona a nova entrega na lista
+      entregas.push({
+        nome,
+        endereco,
+        obs: obs || "Sem observação",
+        status: "pendente"
+      });
+
+      // Limpa os campos depois de salvar
+      document.getElementById("nome").value = "";
+      document.getElementById("endereco").value = "";
+      document.getElementById("obs").value = "";
+
+      // Vai para a tela de entregas
+      mostrarTela("entregas");
+    }
+  </script>
 
 </body>
 </html>
