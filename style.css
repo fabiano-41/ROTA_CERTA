@@ -3,11 +3,18 @@
       box-sizing: border-box;
     }
 
+#sistema {
+  flex: 1;
+}
+
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f0fdf4;
-      color: #1f2937;
+     margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0fdf4;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
     }
 
     /* Cabeçalho do sistema */
@@ -251,12 +258,10 @@
     }
 
 .rodape {
-  background: #16a34a;
+   background: #16a34a;
   color: white;
   text-align: center;
-  padding: 22px 15px;
-  margin-top: 40px;
-  box-shadow: 0 -3px 10px rgba(0,0,0,0.12);
+  padding: 20px;
 }
 
 .rodape p {
