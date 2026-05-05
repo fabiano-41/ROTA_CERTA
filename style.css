@@ -1,5 +1,4 @@
-
-   /* Reset */
+/* Reset */
 * {
   box-sizing: border-box;
 }
@@ -9,7 +8,6 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f0fdf4;
-
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -38,11 +36,22 @@ header {
 .logo {
   font-weight: bold;
   font-size: 22px;
+  white-space: nowrap;
 }
 
 /* Menu */
 nav {
   display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Menus separados */
+#menuMotorista,
+#menuCliente {
+  display: flex;
+  align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
@@ -55,6 +64,10 @@ nav a {
   padding: 9px 11px;
   border-radius: 8px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 nav a:hover {
@@ -63,7 +76,7 @@ nav a:hover {
 
 /* Container principal */
 .container {
-  flex: 1; /* ESSENCIAL pro rodapé */
+  flex: 1;
   width: 100%;
   max-width: 1200px;
   margin: auto;
@@ -131,64 +144,7 @@ input {
   text-align: center;
 }
 
-/* Botão flutuante (+) */
-.fab {
-  position: fixed;
-  bottom: 40px;  /* sobe mais pra não colar na borda */
-  right: 30px;   /* afasta da lateral */
-  
-  background: #000000;
-  color: white;
-
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-
-  font-size: 28px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  cursor: pointer;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-
-  z-index: 9999;
-}
-
-/* Rodapé */
-.rodape {
-  background: #16a34a;
-  color: white;
-  text-align: center;
-  padding: 18px;
-  margin-top: auto;
-}
-
-/* Responsivo */
-@media (max-width: 600px) {
-
-  header {
-    flex-direction: column;
-  }
-
-  nav {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  nav a {
-    width: 100%;
-    text-align: center;
-    background: rgba(255,255,255,0.2);
-  }
-
-  .fab {
-    bottom: 85px;
-    right: 15px;
-  }
-
-}
+/* Tipo de login */
 .tipo-login {
   display: flex;
   justify-content: center;
@@ -204,25 +160,73 @@ input {
 .tipo-login input {
   width: auto;
   margin-right: 5px;
-}  
-
-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
 }
 
-#menuMotorista,
-#menuCliente {
+/* Botão flutuante */
+.fab {
+  position: fixed;
+  bottom: 40px;
+  right: 30px;
+  background: #000000;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 28px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  z-index: 9999;
 }
 
-nav a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+/* Rodapé */
+.rodape {
+  background: #16a34a;
+  color: white;
+  text-align: center;
+  padding: 18px;
+  margin-top: auto;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    padding: 14px;
+  }
+
+  nav {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #menuMotorista,
+  #menuCliente {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  nav a {
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .container {
+    padding: 16px;
+  }
+
+  .fab {
+    bottom: 85px;
+    right: 15px;
+    width: 52px;
+    height: 52px;
+    font-size: 23px;
+  }
 }
