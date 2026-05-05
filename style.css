@@ -1,4 +1,5 @@
-/* Reset */
+
+   /* Reset */
 * {
   box-sizing: border-box;
 }
@@ -133,18 +134,26 @@ input {
 /* Botão flutuante (+) */
 .fab {
   position: fixed;
-  bottom: 90px; /* NÃO encosta no rodapé */
-  right: 200px;
-  background: #16a34a;
+  bottom: 40px;  /* sobe mais pra não colar na borda */
+  right: 30px;   /* afasta da lateral */
+  
+  background: #000000;
   color: white;
-  width: 55px;
-  height: 55px;
+
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  font-size: 25px;
+
+  font-size: 28px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+
+  z-index: 9999;
 }
 
 /* Rodapé */
@@ -180,3 +189,19 @@ input {
   }
 
 }
+.tipo-login {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.tipo-login label {
+  cursor: pointer;
+}
+
+.tipo-login input {
+  width: auto;
+  margin-right: 5px;
+}  
