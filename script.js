@@ -1,4 +1,4 @@
- // Lista inicial de entregas
+  // Lista inicial de entregas
     let entregas = [
       { nome: "João Silva", endereco: "Rua A, 120", obs: "Cliente em casa", status: "pendente" },
       { nome: "Maria Souza", endereco: "Rua B, 45", obs: "Entregar na portaria", status: "pendente" },
@@ -32,13 +32,15 @@
   if (tipo.value === "motorista") {
     document.getElementById("menuMotorista").style.display = "inline";
     document.getElementById("menuCliente").style.display = "none";
-    document.getElementById("botaoMotorista").style.display = "flex";
+   let botao = document.getElementById("botaoMotorista");
+if (botao) botao.style.display = "flex";
 
     mostrarTela("localizacao");
   } else {
     document.getElementById("menuMotorista").style.display = "none";
     document.getElementById("menuCliente").style.display = "inline";
-    document.getElementById("botaoMotorista").style.display = "none";
+    let botao = document.getElementById("botaoMotorista");
+if (botao) botao.style.display = "none";
 
     mostrarTela("cliente");
   }
