@@ -205,3 +205,24 @@ input {
   width: auto;
   margin-right: 5px;
 }  
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#menuMotorista,
+#menuCliente {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
