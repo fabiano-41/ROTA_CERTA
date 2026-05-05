@@ -1,115 +1,158 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
- 
-
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rota Certa</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- CSS do mapa -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
 
 <body>
 
-  <!-- Tela de login -->
-  <div id="login" class="login-box card">
-    <h2><i class="fa-solid fa-truck"></i> Login do Motorista</h2>
+<!-- LOGIN -->
+<div id="login" class="login-box card">
+  <h2><i class="fa-solid fa-truck-fast"></i> Login Rota Certa</h2>
 
-    <input id="usuario" placeholder="Nome do motorista"><br><br>
+  <input id="email" type="email" placeholder="Digite seu email"><br><br>
+  <input id="senha" type="password" placeholder="Digite sua senha"><br><br>
 
-    <input id="senha" type="password" placeholder="Senha"><br><br>
+  <div class="tipo-login">
+    <label>
+      <input type="radio" name="tipo" value="motorista"> Motorista
+    </label>
 
-    <button onclick="entrar()">
-      <i class="fa-solid fa-right-to-bracket"></i> Entrar
-    </button>
-
-   
+    <label>
+      <input type="radio" name="tipo" value="cliente"> Cliente
+    </label>
   </div>
 
- 
-  <div id="sistema" style="display:none;">
+  <br>
 
-    <!-- Cabeçalho com logo e menu -->
-    <header>
-      <div class="logo">
-        <i class="fa-solid fa-truck-fast"></i> Rota Certa
-      </div>
+  <button onclick="entrar()">
+    <i class="fa-solid fa-right-to-bracket"></i> Entrar
+  </button>
+</div>
 
-      <!-- Menu de navegação -->
-      <nav>
+<!-- SISTEMA -->
+<div id="sistema" style="display:none;">
+
+  <header>
+    <div class="logo">
+      <i class="fa-solid fa-truck-fast"></i> Rota Certa
+    </div>
+
+    <nav>
+      <!-- MENU DO MOTORISTA -->
+      <span id="menuMotorista">
         <a onclick="mostrarTela('localizacao')"><i class="fa-solid fa-map-location-dot"></i> Localização</a>
         <a onclick="mostrarTela('entregas')"><i class="fa-solid fa-box"></i> Entregas</a>
         <a onclick="mostrarTela('concluidas')"><i class="fa-solid fa-circle-check"></i> Concluídas</a>
         <a onclick="mostrarTela('historico')"><i class="fa-solid fa-clock-rotate-left"></i> Histórico</a>
         <a onclick="mostrarTela('cadastro')"><i class="fa-solid fa-plus"></i> Nova Entrega</a>
-        <a onclick="sair()"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
-      </nav>
-    </header>
+      </span>
 
-    
-    <div class="container">
+      <!-- MENU DO CLIENTE -->
+      <span id="menuCliente" style="display:none;">
+        <a onclick="mostrarTela('cliente')"><i class="fa-solid fa-user"></i> Minha Entrega</a>
+        <a onclick="mostrarTela('novoPedido')"><i class="fa-solid fa-cart-plus"></i> Novo Pedido</a>
+      </span>
 
-      <!-- mapa -->
-      <div id="localizacao" class="tela ativa">
-        <h2><i class="fa-solid fa-map-location-dot"></i> Mapa da rota</h2>
-        <div id="map"></div>
-      </div>
+      <a onclick="sair()"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+    </nav>
+  </header>
 
-      <!-- entregas pendentes -->
-      <div id="entregas" class="tela">
-        <h2><i class="fa-solid fa-box"></i> Entregas para fazer</h2>
-        <div id="listaEntregas" class="lista-grid"></div>
-      </div>
+  <div class="container">
 
-      <!--  entregas concluídas -->
-      <div id="concluidas" class="tela">
-        <h2><i class="fa-solid fa-circle-check"></i> Entregas concluídas</h2>
-        <div id="listaConcluidas" class="lista-grid"></div>
-      </div>
-
-      <!--histórico -->
-      <div id="historico" class="tela">
-        <h2><i class="fa-solid fa-clock-rotate-left"></i> Histórico</h2>
-        <div id="historicoLista" class="lista-grid"></div>
-      </div>
-
-      <!--  cadastro de entrega -->
-      <div id="cadastro" class="tela">
-        <h2><i class="fa-solid fa-plus"></i> Cadastrar nova entrega</h2>
-
-        <div class="card">
-          <input id="nome" placeholder="Nome do cliente"><br><br>
-          <input id="endereco" placeholder="Endereço"><br><br>
-          <input id="obs" placeholder="Observação"><br><br>
-
-          <button onclick="criarEntrega()">
-            <i class="fa-solid fa-floppy-disk"></i> Salvar entrega
-          </button>
-        </div>
-      </div>
-
+    <!-- TELA DO MOTORISTA: MAPA -->
+    <div id="localizacao" class="tela ativa tela-motorista">
+      <h2><i class="fa-solid fa-map-location-dot"></i> Mapa da rota</h2>
+      <div id="map"></div>
     </div>
 
-    
-    
+    <!-- TELA DO MOTORISTA: ENTREGAS -->
+    <div id="entregas" class="tela tela-motorista">
+      <h2><i class="fa-solid fa-box"></i> Entregas para fazer</h2>
+      <div id="listaEntregas" class="lista-grid"></div>
+    </div>
+
+    <!-- TELA DO MOTORISTA: CONCLUÍDAS -->
+    <div id="concluidas" class="tela tela-motorista">
+      <h2><i class="fa-solid fa-circle-check"></i> Entregas concluídas</h2>
+      <div id="listaConcluidas" class="lista-grid"></div>
+    </div>
+
+    <!-- TELA DO MOTORISTA: HISTÓRICO -->
+    <div id="historico" class="tela tela-motorista">
+      <h2><i class="fa-solid fa-clock-rotate-left"></i> Histórico</h2>
+      <div id="historicoLista" class="lista-grid"></div>
+    </div>
+
+    <!-- TELA DO MOTORISTA: CADASTRO -->
+    <div id="cadastro" class="tela tela-motorista">
+      <h2><i class="fa-solid fa-plus"></i> Cadastrar nova entrega</h2>
+
+      <div class="card">
+        <input id="nome" placeholder="Nome do cliente"><br><br>
+        <input id="endereco" placeholder="Endereço"><br><br>
+        <input id="obs" placeholder="Observação"><br><br>
+
+        <button onclick="criarEntrega()">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar entrega
+        </button>
+      </div>
+    </div>
+
+    <!-- TELA DO CLIENTE: MINHA ENTREGA -->
+    <div id="cliente" class="tela tela-cliente">
+      <h2><i class="fa-solid fa-user"></i> Área do Cliente</h2>
+
+      <div class="card cliente-card">
+        <h3><i class="fa-solid fa-box"></i> Sua entrega</h3>
+
+        <p><b>Status:</b> <span id="statusCliente">Saiu para entrega</span></p>
+        <p><b>Motorista:</b> Carlos Silva</p>
+        <p><b>Tempo estimado:</b> <span id="tempoEntrega">25 minutos</span></p>
+        <p><b>Endereço:</b> Rua A, 120</p>
+
+        <button onclick="acompanharEntrega()">
+          <i class="fa-solid fa-location-dot"></i> Acompanhar entrega
+        </button>
+      </div>
+    </div>
+
+    <!-- TELA DO CLIENTE: NOVO PEDIDO -->
+    <div id="novoPedido" class="tela tela-cliente">
+      <h2><i class="fa-solid fa-cart-plus"></i> Fazer novo pedido</h2>
+
+      <div class="card">
+        <input id="pedidoCliente" placeholder="Digite o seu nome"><br><br>
+        <input id="enderecoCliente" placeholder="Endereço de entrega"><br><br>
+        <input id="" placeholder="Digite o que deseja pedir"><br><br>
+
+        <button onclick="fazerPedido()">
+          <i class="fa-solid fa-plus"></i> Fazer pedido
+        </button>
+      </div>
+
+      <div id="pedidosCliente" class="lista-grid"></div>
+    </div>
 
   </div>
 
-  <!-- Biblioteca JavaScript do mapa -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  
+</div>
 
-  <script src="script.js" ></script>
-
-
+<!-- RODAPÉ -->
 <footer class="rodape">
   <p><i class="fa-solid fa-truck-fast"></i> Rota Certa</p>
   <p>Sistema web para controle de entregas e rotas.</p>
   <small>© 2026 Rota Certa - Todos os direitos reservados.</small>
 </footer>
 
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
