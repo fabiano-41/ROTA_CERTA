@@ -8,7 +8,7 @@
 
     let mapaCriado = false;
 
-   function entrar() {
+  function entrar() {
   let email = document.getElementById("email").value;
   let senha = document.getElementById("senha").value;
   let tipo = document.querySelector('input[name="tipo"]:checked');
@@ -29,6 +29,16 @@
   criarMapa();
   render();
 
+  if (tipo.value === "motorista") {
+    document.getElementById("menuMotorista").style.display = "flex";
+    document.getElementById("menuCliente").style.display = "none";
+    mostrarTela("localizacao");
+  } else {
+    document.getElementById("menuMotorista").style.display = "none";
+    document.getElementById("menuCliente").style.display = "flex";
+    mostrarTela("cliente");
+  }
+}
   if (tipo.value === "motorista") {
     document.getElementById("menuMotorista").style.display = "inline";
     document.getElementById("menuCliente").style.display = "none";
