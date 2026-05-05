@@ -8,24 +8,41 @@
 
     let mapaCriado = false;
 
-    function entrar() {
-      let usuario = document.getElementById("usuario").value;
-      let senha = document.getElementById("senha").value;
+   function entrar() {
+  let email = document.getElementById("email").value;
+  let senha = document.getElementById("senha").value;
+  let tipo = document.querySelector('input[name="tipo"]:checked');
 
-      // Verifica se os campos foram preenchidos
-      if (!usuario || !senha) {
-        alert("Preencha nome e senha");
-        return;
-      }
+  if (!email || !senha) {
+    alert("Preencha email e senha");
+    return;
+  }
 
-      // Esconde o login e mostra o sistema
-      document.getElementById("login").style.display = "none";
-      document.getElementById("sistema").style.display = "block";
+  if (!tipo) {
+    alert("Escolha se você é cliente ou motorista");
+    return;
+  }
 
-      // Cria o mapa e carrega as entregas
-      criarMapa();
-      render();
-    }
+  document.getElementById("login").style.display = "none";
+  document.getElementById("sistema").style.display = "flex";
+
+  criarMapa();
+  render();
+
+  if (tipo.value === "motorista") {
+    document.getElementById("menuMotorista").style.display = "inline";
+    document.getElementById("menuCliente").style.display = "none";
+    document.getElementById("botaoMotorista").style.display = "flex";
+
+    mostrarTela("localizacao");
+  } else {
+    document.getElementById("menuMotorista").style.display = "none";
+    document.getElementById("menuCliente").style.display = "inline";
+    document.getElementById("botaoMotorista").style.display = "none";
+
+    mostrarTela("cliente");
+  }
+}
 
     // Função para sair do sistema
     function sair() {
@@ -162,3 +179,48 @@
       // Vai para a tela de entregas
       mostrarTela("entregas");
     }
+    function acompanharEntrega() {
+  mostrarTela("localizacao");
+
+  setTimeout(() => {
+    if (window.mapa) {
+      window.mapa.invalidateSize();
+    }
+  }, 200);
+}
+
+function fazerPedido() {
+  let pedido = document.getElementById("pedidoCliente").value;
+  let endereco = document.getElementById("enderecoCliente").value;
+  let listaPedidos = document.getElementById("pedidosCliente");
+
+  if (!pedido || !endereco) {
+    alert("Preencha o pedido e o endereço");
+    return;
+  }
+
+  // mostra no cliente
+  listaPedidos.innerHTML += `
+    <div class="card">
+      <b><i class="fa-solid fa-cart-shopping"></i> Pedido feito</b><br><br>
+      <i class="fa-solid fa-box"></i> ${pedido}<br>
+      <i class="fa-solid fa-location-dot"></i> ${endereco}<br>
+      <b>Status:</b> Aguardando motorista
+    </div>
+  `;
+
+  // envia para o motorista
+  entregas.push({
+    nome: pedido,
+    endereco: endereco,
+    obs: "Pedido do cliente",
+    status: "pendente"
+  });
+
+  render();
+
+  document.getElementById("pedidoCliente").value = "";
+  document.getElementById("enderecoCliente").value = "";
+
+  alert("Pedido enviado para o motorista!");
+}
